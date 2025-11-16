@@ -34,7 +34,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onDelete, 
   const cardClasses = `
     relative group bg-white rounded-lg shadow-md overflow-hidden 
     transform transition-all duration-200 hover:scale-105 cursor-pointer
-    flex flex-col
+    flex flex-col border border-gray-200
     ${isSelected ? 'ring-2 ring-offset-2 ring-indigo-500' : ''}
   `;
 

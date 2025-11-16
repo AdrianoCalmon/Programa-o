@@ -18,6 +18,7 @@ interface ControlsProps {
   locations: SourceLocation[];
   leaders: string[];
   groups: string[];
+  onReset: () => void;
 }
 
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -44,11 +45,11 @@ const ArrowUpTrayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-const CogIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m18 0h-1.5m-15 0a7.5 7.5 0 1115 0m-15 0H3m18 0h-1.5m-15 0a7.5 7.5 0 1115 0m-15 0H3m18 0h-1.5" />
-    </svg>
-);
+const timeSlots = Array.from({ length: 96 }, (_, i) => {
+  const hours = Math.floor(i / 4);
+  const minutes = (i % 4) * 15;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+});
 
 
 export const Controls: React.FC<ControlsProps> = ({ 
@@ -67,6 +68,7 @@ export const Controls: React.FC<ControlsProps> = ({
   locations,
   leaders,
   groups,
+  onReset,
 }) => {
   const [day, setDay] = useState<DayOfWeek>('monday');
   const [time, setTime] = useState('09:00');
@@ -138,8 +140,8 @@ export const Controls: React.FC<ControlsProps> = ({
           <h2 className="text-lg font-bold text-gray-800 mb-3">Editar Atividade</h2>
         )}
         <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
+          <div className="grid grid-cols-5 gap-3">
+            <div className="col-span-3">
               <label htmlFor="day" className="block text-sm font-medium text-gray-700 mb-1">Dia</label>
               <select
                 id="day"
@@ -152,9 +154,18 @@ export const Controls: React.FC<ControlsProps> = ({
                 ))}
               </select>
             </div>
-            <div>
+            <div className="col-span-2">
               <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1">Horário</label>
-              <input type="time" id="time" value={time} onChange={(e) => setTime(e.target.value)} className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900" />
+              <select
+                id="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900"
+              >
+                {timeSlots.map(slot => (
+                  <option key={slot} value={slot}>{slot}</option>
+                ))}
+              </select>
             </div>
           </div>
           <div>
@@ -267,9 +278,11 @@ export const Controls: React.FC<ControlsProps> = ({
                 )}
             </button>
          )}
-         <button onClick={onOpenSourcesModal} className="w-full flex items-center justify-center gap-2 bg-gray-700 text-white py-3 rounded-md hover:bg-gray-800 transition-colors font-semibold">
-           <CogIcon className="w-5 h-5" />
+         <button onClick={onOpenSourcesModal} className="w-full bg-gray-700 text-white py-3 rounded-md hover:bg-gray-800 transition-colors font-semibold">
            Gerenciar Fontes
+         </button>
+         <button onClick={onReset} className="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-colors font-semibold">
+           Reiniciar
          </button>
       </div>
     </div>

@@ -25,9 +25,21 @@ const useLocalStorage = <T>(key: string, initialValue: T): [T, (value: T) => voi
   return [storedValue, setValue];
 };
 
+const initialLeaders = [
+  'Adriano Calmon',
+  'Atos',
+  'Daniel',
+  'Gabriel',
+  'Gerfeson',
+  'Gildeano',
+  'Italo',
+  'Jefferson',
+  'Jonathan',
+];
+
 export const useSources = () => {
   const [locations, setLocations] = useLocalStorage<SourceLocation[]>('source_locations', []);
-  const [leaders, setLeaders] = useLocalStorage<string[]>('source_leaders', []);
+  const [leaders, setLeaders] = useLocalStorage<string[]>('source_leaders', initialLeaders);
   const [groups, setGroups] = useLocalStorage<string[]>('source_groups', []);
 
   const addLocation = useCallback((name: string, imageUrl: string) => {

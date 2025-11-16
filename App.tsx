@@ -91,7 +91,14 @@ const App: React.FC = () => {
   const handleDownloadImage = useCallback(() => {
     const scheduleElement = document.getElementById('schedule-preview');
     if (scheduleElement && typeof html2canvas !== 'undefined') {
-      html2canvas(scheduleElement, { 
+      const clone = scheduleElement.cloneNode(true) as HTMLElement;
+      clone.style.transform = 'scale(1)';
+      clone.style.position = 'absolute';
+      clone.style.left = '-9999px';
+      clone.style.top = '0px';
+      document.body.appendChild(clone);
+
+      html2canvas(clone, {
         useCORS: true,
         scale: 2,
         backgroundColor: '#ffffff',
@@ -100,6 +107,8 @@ const App: React.FC = () => {
         link.download = `programacao-${weekString.replace(/\s/g, '-')}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
+      }).finally(() => {
+        document.body.removeChild(clone);
       });
     } else {
       console.error('Elemento da agenda não encontrado ou html2canvas não carregado.');
@@ -121,8 +130,15 @@ const App: React.FC = () => {
     }
 
     setIsSharing(true);
+    const clone = scheduleElement.cloneNode(true) as HTMLElement;
+    clone.style.transform = 'scale(1)';
+    clone.style.position = 'absolute';
+    clone.style.left = '-9999px';
+    clone.style.top = '0px';
+    document.body.appendChild(clone);
+
     try {
-      const canvas = await html2canvas(scheduleElement, { 
+      const canvas = await html2canvas(clone, { 
         useCORS: true,
         scale: 2,
         backgroundColor: '#ffffff',
@@ -158,8 +174,17 @@ const App: React.FC = () => {
       console.error('Erro ao gerar imagem com html2canvas:', error);
       alert('Ocorreu um erro ao gerar a imagem para compartilhamento.');
       setIsSharing(false);
+    } finally {
+      document.body.removeChild(clone);
     }
   }, [weekString]);
+
+  const handleResetSchedule = () => {
+    if (window.confirm('Tem certeza que deseja reiniciar a programação? Todas as atividades serão removidas.')) {
+      setSchedule([]);
+      setEditingActivity(null);
+    }
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -197,15 +222,18 @@ const App: React.FC = () => {
           locations={sources.locations}
           leaders={sources.leaders}
           groups={sources.groups}
+          onReset={handleResetSchedule}
         />
-        <div className="flex-1 p-4 md:p-8 bg-gray-200 flex items-center justify-center">
-          <SchedulePreview 
-            schedule={schedule}
-            weekString={weekString}
-            onDeleteActivity={handleDeleteActivity}
-            onSelectActivity={handleSelectActivityForEdit}
-            editingActivityId={editingActivity?.id || null}
-          />
+        <div className="flex-1 p-4 md:p-8 bg-gray-200 flex items-start md:items-center justify-start md:justify-center">
+          <div className="w-[24rem] aspect-[210/297] md:w-auto md:aspect-auto">
+            <SchedulePreview 
+              schedule={schedule}
+              weekString={weekString}
+              onDeleteActivity={handleDeleteActivity}
+              onSelectActivity={handleSelectActivityForEdit}
+              editingActivityId={editingActivity?.id || null}
+            />
+          </div>
         </div>
       </main>
     </div>

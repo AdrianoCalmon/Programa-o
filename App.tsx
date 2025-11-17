@@ -54,35 +54,40 @@ const App: React.FC = () => {
     setEditingActivity(activity);
   };
 
-  const handleUpdateActivity = (day: DayOfWeek, time: string, location: string, leader: string, group?: string) => {
-    if (!editingActivity) return;
+  const handleUpdateActivity = useCallback((day: DayOfWeek, time: string, location: string, leader: string, group?: string) => {
+    setEditingActivity(currentEditingActivity => {
+        if (!currentEditingActivity) {
+            return null;
+        }
 
-    let imageUrl = editingActivity.imageUrl;
-    if (location !== editingActivity.location) {
-        const existingLocation = sources.locations.find(l => l.name === location);
-        imageUrl = existingLocation
-            ? existingLocation.imageUrl
-            : `https://picsum.photos/seed/${Math.random()}/400/300`;
-    }
+        let imageUrl = currentEditingActivity.imageUrl;
+        if (location !== currentEditingActivity.location) {
+            const existingLocation = sources.locations.find(l => l.name === location);
+            imageUrl = existingLocation
+                ? existingLocation.imageUrl
+                : `https://picsum.photos/seed/${Math.random()}/400/300`;
+        }
 
-    const updatedActivity: Activity = {
-      ...editingActivity,
-      day,
-      time,
-      location,
-      leader,
-      group,
-      imageUrl,
-    };
-    
-    setSchedule(prevSchedule => {
-      const updatedActivities = prevSchedule
-        .map(act => (act.id === editingActivity.id ? updatedActivity : act));
-      return sortActivities(updatedActivities);
+        const updatedActivity: Activity = {
+            ...currentEditingActivity,
+            day,
+            time,
+            location,
+            leader,
+            group,
+            imageUrl,
+        };
+        
+        setSchedule(prevSchedule => {
+            const updatedActivities = prevSchedule
+                .map(act => (act.id === currentEditingActivity.id ? updatedActivity : act));
+            return sortActivities(updatedActivities);
+        });
+
+        return updatedActivity;
     });
+  }, [sources.locations, setSchedule, setEditingActivity]);
 
-    setEditingActivity(null);
-  };
 
   const handleCancelEdit = () => {
     setEditingActivity(null);

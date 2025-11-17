@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { Activity, DayOfWeek, SourceLocation } from '../types';
 import { DAY_OPTIONS } from '../types';
 
@@ -86,9 +86,11 @@ export const Controls: React.FC<ControlsProps> = ({
   const [group, setGroup] = useState('');
   
   const isEditing = !!editingActivity;
+  const isPopulatingFromProp = useRef(false);
 
   useEffect(() => {
-    if (isEditing) {
+    if (editingActivity) {
+      isPopulatingFromProp.current = true;
       setDay(editingActivity.day);
       setTime(editingActivity.time);
       setLocation(editingActivity.location);
@@ -111,13 +113,30 @@ export const Controls: React.FC<ControlsProps> = ({
     }
   }, [editingActivity]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (!isEditing) {
+      return;
+    }
+
+    if (isPopulatingFromProp.current) {
+      isPopulatingFromProp.current = false;
+      return;
+    }
+
     if (location.trim()) {
       const groupToSend = showGroupSelect ? group : undefined;
-      if (isEditing) {
-        onUpdateActivity(day, time, location, leader, groupToSend);
-      } else {
+      onUpdateActivity(day, time, location, leader, groupToSend);
+    }
+  }, [day, time, location, leader, group, showGroupSelect, isEditing, onUpdateActivity]);
+
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing) {
+      onCancelEdit();
+    } else {
+      if (location.trim()) {
+        const groupToSend = showGroupSelect ? group : undefined;
         onAddActivity(day, time, location, leader, groupToSend);
       }
     }
@@ -254,7 +273,7 @@ export const Controls: React.FC<ControlsProps> = ({
             </button>
           )}
           <button type="submit" className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition-colors font-semibold disabled:bg-indigo-300" disabled={!location.trim()}>
-            {isEditing ? 'Atualizar' : 'Adicionar'}
+            {isEditing ? 'Concluir' : 'Adicionar'}
           </button>
         </div>
       </form>

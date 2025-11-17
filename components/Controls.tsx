@@ -145,7 +145,7 @@ export const Controls: React.FC<ControlsProps> = ({
   const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   return (
-    <div className="w-full md:w-80 lg:w-96 p-4 bg-gray-50 md:h-screen md:sticky top-0 flex flex-col space-y-4 border-r border-gray-200">
+    <div className="w-full md:w-80 lg:w-96 p-4 bg-gray-50 md:h-screen md:overflow-y-auto md:sticky top-0 flex flex-col space-y-4 border-r border-gray-200">
       
       <div className="p-4 bg-white rounded-lg shadow">
         <p className="font-semibold text-lg text-indigo-600 text-center mb-3">{weekString}</p>
@@ -311,6 +311,9 @@ export const Controls: React.FC<ControlsProps> = ({
          <button onClick={onReset} className="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-colors font-semibold">
            Reiniciar
          </button>
+      </div>
+      <div className="text-center text-xs text-gray-400 mt-auto pt-4">
+        <p>Adriano Calmon da Silva Queiroz, 2025</p>
       </div>
     </div>
   );

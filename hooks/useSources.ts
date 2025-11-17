@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import type { SourceLocation } from '../types';
 
@@ -104,6 +105,11 @@ const initialLocations: SourceLocation[] = [
     id: '12',
     name: 'Salão do Reino - Riacho de Prata',
     imageUrl: 'https://i.ibb.co/d4vLzcPz/Screenshot-20251116-172524-2.png',
+  },
+  {
+    id: '13',
+    name: 'Zoom',
+    imageUrl: 'https://i.ibb.co/Xk69mNbG/Screenshot-20251117-074457-2.jpg',
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
 

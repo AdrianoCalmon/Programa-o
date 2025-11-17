@@ -17,9 +17,9 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({ schedule, week
       id="schedule-preview"
       className="bg-white p-6 rounded-md shadow-2xl w-[48rem] min-w-[48rem] flex flex-col aspect-[210/297] transform origin-top-left scale-50 md:scale-100"
     >
-      <div className="bg-gray-800 text-white text-center py-8 mb-6 rounded-t-md -mt-6 -mx-6 flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold tracking-widest uppercase">PROGRAMAÇÃO DE CAMPO</h1>
-        <h2 className="text-xl font-normal text-gray-300 mt-2">{weekString}</h2>
+      <div className="bg-gray-800 text-white text-center py-12 mb-6 rounded-t-md -mt-6 -mx-6 flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold tracking-wider uppercase">PROGRAMAÇÃO DE CAMPO</h1>
+        <h2 className="text-2xl font-normal text-gray-300 mt-4">{weekString}</h2>
       </div>
       {schedule.length > 0 ? (
         <div className="grid grid-cols-3 gap-3 flex-grow h-full">

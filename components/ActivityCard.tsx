@@ -45,7 +45,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onDelete, 
 
   return (
     <div className={cardClasses} onClick={onSelect}>
-      <img src={activity.imageUrl} alt={activity.location} className="w-full h-36 object-cover" />
+      <img src={activity.imageUrl} alt={activity.location} className="w-full h-44 object-cover" />
       <div className="p-2 flex-grow flex flex-col">
         <div>
             <p className="text-base font-semibold text-indigo-600 tracking-wider mb-1">{dayLabel}</p>

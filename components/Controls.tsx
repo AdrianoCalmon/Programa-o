@@ -45,9 +45,17 @@ const ArrowUpTrayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-const timeSlots = Array.from({ length: 96 }, (_, i) => {
-  const hours = Math.floor(i / 4);
-  const minutes = (i % 4) * 15;
+const START_HOUR = 6;
+const END_HOUR = 20;
+const SLOTS_PER_HOUR = 4;
+const START_SLOT_INDEX = START_HOUR * SLOTS_PER_HOUR;
+const END_SLOT_INDEX = END_HOUR * SLOTS_PER_HOUR;
+const NUM_SLOTS = END_SLOT_INDEX - START_SLOT_INDEX + 1;
+
+const timeSlots = Array.from({ length: NUM_SLOTS }, (_, i) => {
+  const slotIndex = START_SLOT_INDEX + i;
+  const hours = Math.floor(slotIndex / SLOTS_PER_HOUR);
+  const minutes = (slotIndex % SLOTS_PER_HOUR) * 15;
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 });
 

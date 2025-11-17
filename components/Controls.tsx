@@ -18,7 +18,6 @@ interface ControlsProps {
   locations: SourceLocation[];
   leaders: string[];
   groups: string[];
-  onReset: () => void;
 }
 
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -76,7 +75,6 @@ export const Controls: React.FC<ControlsProps> = ({
   locations,
   leaders,
   groups,
-  onReset,
 }) => {
   const [day, setDay] = useState<DayOfWeek>('monday');
   const [time, setTime] = useState('09:00');
@@ -278,7 +276,7 @@ export const Controls: React.FC<ControlsProps> = ({
         </div>
       </form>
       
-      <div className="pt-4 space-y-2">
+      <div className="pt-4 space-y-2 mt-auto">
          <button onClick={onDownloadImage} className="w-full flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors font-semibold">
            <ArrowDownTrayIcon className="w-5 h-5" />
            Baixar como Imagem
@@ -308,12 +306,6 @@ export const Controls: React.FC<ControlsProps> = ({
          <button onClick={onOpenSourcesModal} className="w-full bg-gray-700 text-white py-3 rounded-md hover:bg-gray-800 transition-colors font-semibold">
            Gerenciar Fontes
          </button>
-         <button onClick={onReset} className="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-colors font-semibold">
-           Reiniciar
-         </button>
-      </div>
-      <div className="text-center text-xs text-gray-400 mt-auto pt-4">
-        <p>Adriano Calmon da Silva Queiroz, 2025</p>
       </div>
     </div>
   );

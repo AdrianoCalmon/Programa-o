@@ -1,3 +1,4 @@
+// Author: Adriano Calmon da Silva Queiroz, 2025
 import React, { useState, useCallback } from 'react';
 import { Controls } from './components/Controls';
 import { SchedulePreview } from './components/SchedulePreview';
@@ -184,13 +185,6 @@ const App: React.FC = () => {
     }
   }, [weekString]);
 
-  const handleResetSchedule = () => {
-    if (window.confirm('Tem certeza que deseja reiniciar a programação? Todas as atividades serão removidas.')) {
-      setSchedule([]);
-      setEditingActivity(null);
-    }
-  };
-
   return (
     <div className="bg-gray-100 min-h-screen">
       {isSourcesModalOpen && (
@@ -227,7 +221,6 @@ const App: React.FC = () => {
           locations={sources.locations}
           leaders={sources.leaders}
           groups={sources.groups}
-          onReset={handleResetSchedule}
         />
         <div className="flex-1 p-4 md:p-8 bg-gray-200 flex items-start md:items-center justify-start md:justify-center">
           <div className="w-[24rem] aspect-[210/297] md:w-auto md:aspect-auto">
